@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novel - Khassy & Khassa</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDOC4XG4rmb6zsTA7Ej2jRyazisve9WDQg",
+      authDomain: "khassy-and-khassa-project.firebaseapp.com",
+      projectId: "khassy-and-khassa-project",
+      storageBucket: "khassy-and-khassa-project.firebasestorage.app",
+      messagingSenderId: "46476106115",
+      appId: "1:46476106115:web:10583d454a69a39a897eb6",
+      measurementId: "G-3H9S42V5Y2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('chapter-list');
+      const q = query(collection(db, "chapters"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement('div');
+        div.innerHTML = `<h3>${data.title}</h3><p>${data.content}</p><hr>`;
+        container.appendChild(div);
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Daftar Chapter</h1>
+  <div id="chapter-list"></div>
+</body>
+</html>
